@@ -1,7 +1,7 @@
 import { movieValidation, watchedValidation, genreValidation } from "../validator/movies.validator.js";
 import { Request, Response, NextFunction } from "express";
 import { Movie, Genre, Wishlist } from "../protocols/movies.js";
-import { checkIfMovieExists } from "../repositories/movies.repository.js";
+import { checkIfMovieExists, checkIfMovieIsInWishlist } from "../repositories/movies.repository.js";
 
 
 const genreValidator = async (req: Request, res: Response, next: NextFunction) => {
@@ -47,6 +47,7 @@ const movieValidator = async (req: Request, res: Response, next: NextFunction) =
 
 const watchedValidator = async (req: Request, res: Response, next: NextFunction) => {
     const moviewishlist = req.body as Wishlist;
+    const { userId, movieId } = moviewishlist;
 
      const { error } = watchedValidation(moviewishlist);
 
@@ -56,11 +57,18 @@ const watchedValidator = async (req: Request, res: Response, next: NextFunction)
         }) 
     }
 
+   try{
+
+    const isMovie = await checkIfMovieIsInWishlist(userId, movieId);
+    if (isMovie.rows[0]) return res.status(409).send("Movie already exists in wishlist");
+
+
+    next();
+
+   }catch(error){
+    res.sendStatus(500);
+   }
    
-    try{
-
-
-}
 }
 
 export { movieValidator, watchedValidator, genreValidator };
