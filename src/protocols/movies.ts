@@ -19,7 +19,7 @@ export type WishlistEntity = {
 }
 
 export type Query = {
-    genre: string
+    id: string
 }
 
 export type QueryMovie = {

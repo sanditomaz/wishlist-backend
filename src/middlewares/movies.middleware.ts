@@ -1,11 +1,12 @@
 import { movieValidation, watchedValidation, genreValidation } from "../validator/movies.validator.js";
 import { Request, Response, NextFunction } from "express";
 import { Movie, Genre, Wishlist } from "../protocols/movies.js";
-import { checkIfMovieExists, checkIfMovieIsInWishlist } from "../repositories/movies.repository.js";
+import { checkIfMovieExists, checkIfMovieIsInWishlist, checkIfGenreExists } from "../repositories/movies.repository.js";
 
 
 const genreValidator = async (req: Request, res: Response, next: NextFunction) => {
     const genreName = req.body as Genre;
+    const { genre } = genreName;
 
     const { error } = genreValidation(genreName);
 
@@ -14,8 +15,15 @@ const genreValidator = async (req: Request, res: Response, next: NextFunction) =
             message: error.message
         }) 
     }
+    try{
 
-   next();
+        const checkGenre = await checkIfGenreExists(genre);
+        if (checkGenre.rows[0]) return res.status(409).send("Genre already exists");
+       
+        next();
+    }catch(error){
+        res.sendStatus(500);
+    }
 
 }
 

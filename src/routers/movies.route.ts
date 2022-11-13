@@ -9,7 +9,7 @@ router.get("/movies/genre", getGenre);
 
 router.post("/movies", movieValidator, postMovie);
 router.get("/movies", getAllMovies);
-router.get("/movies/:genre", getMovieByGenre);
+router.get("/movies/genre/:id", getMovieByGenre);
 
 router.post("/movies/mylist", validateUser, watchedValidator, addMovieToList);
 router.get("/movies/mylist", validateUser, getUserMovies);

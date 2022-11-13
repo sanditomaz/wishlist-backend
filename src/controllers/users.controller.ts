@@ -12,15 +12,13 @@ async function signUp(req: Request, res: Response) {
   const hashPassword = bcrypt.hashSync(password, 10);
 
   try{
-    const registedUser = await registerUser(name, image, email, hashPassword); 
-    console.log(registedUser)
+
+    await registerUser(name, image, email, hashPassword); 
     
-    res.status(200).send("opa");
+    res.sendStatus(201);
   }catch (error){
     res.sendStatus(500);
   }
-
- 
 
 }
 

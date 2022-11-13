@@ -3,7 +3,7 @@ import { verifyToken } from "../repositories/users.repository.js";
 
 const validateUser = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.replace("Bearer ", "");
- 
+  
   if (!token) {
     return res.sendStatus(401);
   }
@@ -20,7 +20,7 @@ const validateUser = async (req: Request, res: Response, next: NextFunction) => 
     next();
   } catch (error) {
     
-    res.sendStatus(500);
+    res.status(500).send(error);
   }
 };
 

@@ -50,11 +50,11 @@ async function getAllMovies(req: Request, res: Response) {
 
 
 async function getMovieByGenre(req: Request, res: Response) {
-    const { genre } = req.params as Query;
+    const { id } = req.params as Query;
     
     try{
 
-        const movies = await getAllMovieByGenre(Number(genre));
+        const movies = await getAllMovieByGenre(Number(id));
        
         res.status(200).send(movies.rows)
     }catch(error){
@@ -62,7 +62,7 @@ async function getMovieByGenre(req: Request, res: Response) {
     }
 }
 
-//----------------
+
 
 async function addMovieToList(req: Request, res: Response) {
     const { userId } = res.locals as QueryUser;
@@ -78,15 +78,17 @@ async function addMovieToList(req: Request, res: Response) {
 
 async function getUserMovies(req: Request, res: Response) {
     const { userId } = res.locals as QueryUser;
-    console.log(userId);
+    
     try{
         
-      const userMovies = await getUsersMovies(userId);
-      res.status(200).send(userMovies);
-
-    }catch(error){
-        res.status(500).send(error);
-    }
+        const userMovies = await getUsersMovies(userId);
+        res.status(200).send(userMovies.rows);
+  
+      }catch(error){
+          
+          res.status(500).send(error);
+      }
+   
 }
 
 
