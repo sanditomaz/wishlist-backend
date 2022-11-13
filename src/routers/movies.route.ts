@@ -13,6 +13,6 @@ router.get("/movies/:genre", getMovieByGenre);
 router.post("/movies/mylist", watchedValidator, addMovieToList);
 router.get("/movies/mylist", getUserMovies);
 router.put("/movies/mylist", updateValidator, updateMovie);
-router.delete("/movies/mylist", deleteMovie);
+router.delete("/movies/mylist/:movie", deleteMovie);
 
 export default router;

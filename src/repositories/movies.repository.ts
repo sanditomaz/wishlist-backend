@@ -38,4 +38,9 @@ async function updateWatchedMovie(watched:Wishlist["watched"], userId:Wishlist["
     return connection.query(`UPDATE "public.users_movies" SET watched =  ($1) WHERE "userId" = ($2) AND "movieId" = ($3);`, [watched, userId, movieId]);
 }
 
-export{ checkIfMovieExists, insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre, checkIfMovieIsInWishlist, addMovieToWishList, updateWatchedMovie }; 
+async function deleteWishlistMovie(movieId:Wishlist["movieId"], userId:Wishlist["userId"]): Promise<QueryResult<WishlistEntity>>{
+    console.log(userId, movieId)
+    return connection.query(`DELETE FROM "public.users_movies" WHERE "userId" = ($1) AND "movieId" = ($2);`, [userId, movieId]);
+}
+
+export{ checkIfMovieExists, insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre, checkIfMovieIsInWishlist, addMovieToWishList, updateWatchedMovie, deleteWishlistMovie }; 
