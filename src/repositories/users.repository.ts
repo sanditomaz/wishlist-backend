@@ -14,4 +14,8 @@ async function logUserIn(userId: number, token: string) {
     return connection.query(`INSERT INTO "public.sessions" ("userId", token) VALUES($1, $2);`,[userId, token]);
 }
 
-export { registerUser, logUserIn, checkIfUserExists };
+async function verifyToken(token: string) {
+    return connection.query(`SELECT * FROM "public.sessions" WHERE token = ($1);`,[token]);
+}
+
+export { registerUser, logUserIn, checkIfUserExists, verifyToken };

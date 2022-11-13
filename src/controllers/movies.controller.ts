@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Movie, Genre, Query, QueryMovie, QueryUser, Wishlist } from "../protocols/movies.js";
-import { insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre, addMovieToWishList, updateWatchedMovie, deleteWishlistMovie } from "../repositories/movies.repository.js";
+import { insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre, addMovieToWishList, updateWatchedMovie, deleteWishlistMovie, getUsersMovies } from "../repositories/movies.repository.js";
 
 async function postGenre(req: Request, res: Response) {
     const genreName = req.body as Genre;
@@ -65,20 +65,36 @@ async function getMovieByGenre(req: Request, res: Response) {
 //----------------
 
 async function addMovieToList(req: Request, res: Response) {
+    const { userId } = res.locals as QueryUser;
+
     const wishlistInfo = req.body as Wishlist;
-    const { userId, movieId, watched } = wishlistInfo;
+    const { movieId, watched } = wishlistInfo;
 
     addMovieToWishList(userId, movieId, watched);
     
-  
    res.sendStatus(200);
   
 }
 
+async function getUserMovies(req: Request, res: Response) {
+    const { userId } = res.locals as QueryUser;
+    console.log(userId);
+    try{
+        
+      const userMovies = await getUsersMovies(userId);
+      res.status(200).send(userMovies);
+
+    }catch(error){
+        res.status(500).send(error);
+    }
+}
+
 
 async function updateMovie(req: Request, res: Response) {
+    const { userId } = res.locals as QueryUser;
+
     const update = req.body as Wishlist;
-    const { watched, userId, movieId } = update;
+    const { watched, movieId } = update;
 
     updateWatchedMovie(watched, userId, movieId);
 
@@ -88,11 +104,11 @@ async function updateMovie(req: Request, res: Response) {
 
 async function deleteMovie(req: Request, res: Response) {
     const { movie } = req.params as QueryMovie;
-    const { user } = req.query as QueryUser;
+    const { userId } = res.locals as QueryUser;
 
     try{
-        console.log(movie, user);
-        await deleteWishlistMovie(Number(movie), Number(user));
+        
+        await deleteWishlistMovie(Number(movie), userId);
        
         res.sendStatus(204);
     }catch(error){
@@ -100,12 +116,6 @@ async function deleteMovie(req: Request, res: Response) {
     }
 
   
-}
-
-
-async function getUserMovies(req: Request, res: Response) {
-
-    
 }
 
 

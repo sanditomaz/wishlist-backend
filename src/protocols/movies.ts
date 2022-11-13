@@ -27,7 +27,7 @@ export type QueryMovie = {
 }
 
 export type QueryUser = {
-    user: string
+    userId: number
 }
 
 export type Movie = Omit<MovieEntity, "id">

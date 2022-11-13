@@ -33,11 +33,6 @@ const movieSchema: Joi.Schema<object> = Joi.object ({
  })
 
 const watchSchema: Joi.Schema<object> = Joi.object ({
-    userId: Joi.number().min(1).empty().required().messages({
-        "number.min": "userId should have min 1 character",
-        "number.empty": "userId cannot be an empty field",
-        "any.required": "userId is required",
-    }),
     movieId: Joi.number().min(1).empty().required().messages({
         "number.min": "movieId should have min 1 character",
         "number.empty": "movieId cannot be an empty field",

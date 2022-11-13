@@ -39,8 +39,11 @@ async function updateWatchedMovie(watched:Wishlist["watched"], userId:Wishlist["
 }
 
 async function deleteWishlistMovie(movieId:Wishlist["movieId"], userId:Wishlist["userId"]): Promise<QueryResult<WishlistEntity>>{
-    console.log(userId, movieId)
     return connection.query(`DELETE FROM "public.users_movies" WHERE "userId" = ($1) AND "movieId" = ($2);`, [userId, movieId]);
 }
 
-export{ checkIfMovieExists, insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre, checkIfMovieIsInWishlist, addMovieToWishList, updateWatchedMovie, deleteWishlistMovie }; 
+async function getUsersMovies(userId:Wishlist["userId"]): Promise<QueryResult<MovieEntity>>{
+    return connection.query(`SELECT pm.name, pm.image, pm.platform, pm."genreId" FROM "public.users_movies" pum JOIN "public.movies" pm ON pum."movieId" = pm.id WHERE pum."userId" = ($1);`, [userId]);
+}
+
+export{ checkIfMovieExists, insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre, checkIfMovieIsInWishlist, addMovieToWishList, updateWatchedMovie, deleteWishlistMovie, getUsersMovies }; 

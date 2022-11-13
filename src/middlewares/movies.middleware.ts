@@ -47,7 +47,8 @@ const movieValidator = async (req: Request, res: Response, next: NextFunction) =
 
 const watchedValidator = async (req: Request, res: Response, next: NextFunction) => {
     const moviewishlist = req.body as Wishlist;
-    const { userId, movieId} = moviewishlist;
+    const {movieId} = moviewishlist;
+    const { userId } = res.locals;
 
      const { error } = watchedValidation(moviewishlist);
 
