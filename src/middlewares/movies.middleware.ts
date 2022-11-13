@@ -47,7 +47,7 @@ const movieValidator = async (req: Request, res: Response, next: NextFunction) =
 
 const watchedValidator = async (req: Request, res: Response, next: NextFunction) => {
     const moviewishlist = req.body as Wishlist;
-    const { userId, movieId } = moviewishlist;
+    const { userId, movieId} = moviewishlist;
 
      const { error } = watchedValidation(moviewishlist);
 
@@ -71,4 +71,19 @@ const watchedValidator = async (req: Request, res: Response, next: NextFunction)
    
 }
 
-export { movieValidator, watchedValidator, genreValidator };
+const updateValidator = async (req: Request, res: Response, next: NextFunction) => {
+    const update = req.body as Wishlist;
+
+    const { error } = watchedValidation(update);
+
+    if (error) {
+        return res.status(422).send({
+            message: error.message
+        }) 
+    }
+
+   next();
+
+}
+
+export { movieValidator, watchedValidator, genreValidator, updateValidator };

@@ -57,8 +57,10 @@ const genreSchema:Joi.Schema<object> = Joi.object ({
     }),
 })
 
+
 const movieValidation = validator(movieSchema);
 const watchedValidation = validator(watchSchema);
-const genreValidation = validator(genreSchema)
+const genreValidation = validator(genreSchema);
+
 
 export { movieValidation, watchedValidation, genreValidation};

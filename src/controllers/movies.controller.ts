@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Movie, Genre, Query, Wishlist } from "../protocols/movies.js";
-import { insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre, addMovieToWishList } from "../repositories/movies.repository.js";
-
+import { insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre, addMovieToWishList, updateWatchedMovie } from "../repositories/movies.repository.js";
 
 async function postGenre(req: Request, res: Response) {
     const genreName = req.body as Genre;
@@ -77,7 +76,14 @@ async function addMovieToList(req: Request, res: Response) {
 }
 
 
-async function updateMovie(req: Request, res: Response) {}
+async function updateMovie(req: Request, res: Response) {
+    const update = req.body as Wishlist;
+    const { watched, userId, movieId } = update;
+
+    updateWatchedMovie(watched, userId, movieId);
+
+    res.sendStatus(201);
+}
 
 
 async function deleteMovie(req: Request, res: Response) {}
