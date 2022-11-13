@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { Movie, Genre } from "../protocols/movies.js";
-import { insertMovie, insertGenre, getGenreId } from "../repositories/movies.repository.js";
+import { request, Request, Response } from "express";
+import { Movie, Genre, Query } from "../protocols/movies.js";
+import { insertMovie, insertGenre, getGenreId, getAllTheMovies, getAllMovieByGenre } from "../repositories/movies.repository.js";
 
 
 async function postGenre(req: Request, res: Response) {
@@ -38,10 +38,30 @@ async function postMovie(req: Request, res: Response) {
 
 
 
-async function getAllMovies(req: Request, res: Response) {}
+async function getAllMovies(req: Request, res: Response) {
+    try{
+
+        const movies = await getAllTheMovies();
+       
+        res.status(200).send(movies.rows)
+    }catch(error){
+        res.sendStatus(500)
+    }
+}
 
 
-async function getMovieByGenre(req: Request, res: Response) {}
+async function getMovieByGenre(req: Request, res: Response) {
+    const { genre } = req.params as Query;
+    
+    try{
+
+        const movies = await getAllMovieByGenre(Number(genre));
+       
+        res.status(200).send(movies.rows)
+    }catch(error){
+        res.sendStatus(500)
+    }
+}
 
 //----------------
 
